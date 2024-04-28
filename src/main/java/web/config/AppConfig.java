@@ -3,6 +3,7 @@ package web.config;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import web.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 import java.util.Properties;
-
 
 @Configuration
 @PropertySource("classpath:db.properties")
@@ -42,7 +42,7 @@ public class AppConfig {
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
         LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactory.setDataSource(getDataSource());
-        entityManagerFactory.setPackagesToScan(new String[] { "web.model" });
+        entityManagerFactory.setPackagesToScan("web.models");
         entityManagerFactory.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
         Properties props = new Properties();
          props.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
