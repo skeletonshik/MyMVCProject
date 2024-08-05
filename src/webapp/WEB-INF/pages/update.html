@@ -43,7 +43,7 @@
 </head>
 <body>
 <h1>Edit User</h1>
-<form th:action="@{/saveUser}" th:object="${user}" method="post">
+<form th:action="@{/updateUser}" th:object="${user}" method="post">
     <input type="hidden" th:field="*{id}" id="id"/>
 
     <div>

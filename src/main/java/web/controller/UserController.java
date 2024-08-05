@@ -3,21 +3,22 @@ package web.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import web.models.User;
 import web.service.UserService;
 
 import java.util.List;
 
 @Controller
-public class MyController {
+public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @RequestMapping("/all")
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @GetMapping("/all")
     public String showAllUsers(Model model)    {
 
         List<User> allUsers = userService.getUsers();
@@ -25,7 +26,7 @@ public class MyController {
         return "all-users";
     }
 
-    @RequestMapping("/addNewUser")
+    @GetMapping("/addNewUser")
     public String addUser(Model model)    {
         User user = new User();
         model.addAttribute("user", user);
@@ -33,7 +34,7 @@ public class MyController {
         return "user-info";
 
     }
-    @RequestMapping("/saveUser")
+    @PostMapping("/saveUser")
     public String saveUser(@ModelAttribute("user") User user)    {
 
         userService.saveUSer(user);
@@ -41,7 +42,7 @@ public class MyController {
         return "redirect:/all";
     }
 
-    @RequestMapping("/updateUser")
+    @GetMapping("/updateUser")
     public String updateUser(@RequestParam("userId") long id, Model model)    {
 
         User user = userService.getUser(id);
@@ -50,7 +51,14 @@ public class MyController {
         return "update";
     }
 
-    @RequestMapping("/deleteUser")
+    @PostMapping("/updateUser")
+    public String updateUser(@ModelAttribute("user") User user)    {
+        userService.updateUser(user);
+
+        return "redirect:/all";
+    }
+
+    @GetMapping("/deleteUser")
     public String deleteUser(@RequestParam("userId") long id, Model model)    {
 
         userService.deleteUser(id);
